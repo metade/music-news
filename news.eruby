@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/ DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>News Aggregator - Alpha-Gamma-Beta (v. 0.002)</title>
+	<link href="files/stylesheet.css" media="all" rel="Stylesheet" type="text/css" />
+</head>
+
+<body>
+<div id="container">
+<div id="wrapper">
+	<div id="content">
+
+  <div class="section">
+    <p><%= stories.size %> stories. Generated: <%= Time.now.strftime("%m/%d/%Y at %I:%M%p") %></p>  
+   
+   <% for item in stories %>
+      <div class="section details">
+        <h3><a href="<%= item.urls.first %>"><%= item.title %></a></h3>
+        <p style="color:#444;font-size:90%"><%= item.content %></p>
+      </div>
+    <% end %>
+    
+   </div>
+</div></div></div>
+<br /><br />
+
+</body>
+</html>
