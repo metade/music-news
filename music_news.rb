@@ -13,7 +13,7 @@ module MusicNews::Controllers
     end
   end
 
-  class Artists < R '/artists/?'
+  class Artists < R '/artists'
     def get
       @content = File.read('files/artists.html')
       render :artists      
@@ -40,7 +40,8 @@ module MusicNews::Views
   
   def index
     h1 "Music News"
-    
+    p 'An RSS aggregator for music.'
+    p { text 'See the list of '; a 'artists', :href => R(Artists); text ' to get started...' }
   end
 
   def artists
