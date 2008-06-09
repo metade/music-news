@@ -39,13 +39,21 @@ module MusicNews::Views
   end
   
   def index
+    h1 "Music News"
+    
   end
 
   def artists
+    h1 "Music News: Artists"
+    p "A sample list of artists to play with:"
     text @content
   end
   
   def artist
+    h1 "Music News: #{@artist.name}"
+    p do      
+      a musicbrainz_link(@artist), :href => musicbrainz_link(@artist), :target => 'new'
+    end
     table do
       tr do
         th { 'Date' }
@@ -60,5 +68,11 @@ module MusicNews::Views
         end
       end
     end
+  end
+  
+  private
+  
+  def musicbrainz_link(object)
+    "http://www.musicbrainz.org/artist/#{object.id.uuid}.html"
   end
 end

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rbrainz'
 require 'hpricot'
 require 'open-uri'
+require 'htmlentities'
 require 'feed-normalizer'
 
 class FeedNormalizer::Entry
@@ -42,6 +43,12 @@ module FeedFinder
         puts "404 not found: #{url}"
       end
     end
+        
+    coder = HTMLEntities.new
+    stories.each do |story|
+      story.title = coder.decode(story.title)      
+    end
+
     stories.sort do |a,b| 
       if (a.last_updated.nil? or b.last_updated.nil?)
         b.urls.first <=> a.urls.first
