@@ -31,7 +31,7 @@ module MusicNews::Controllers
 end
 
 module MusicNews::Views
-  def layout
+  def layout_broken
     html do
       title { 'Music News' }
       body { self << yield }
