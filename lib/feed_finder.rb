@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rbrainz'
 require 'hpricot'
+require 'timeout'
 require 'open-uri'
 require 'htmlentities'
 require 'feed-normalizer'
@@ -34,9 +35,11 @@ module FeedFinder
     stories = []
     feeds.each do |url|
       begin
-        feed = FeedNormalizer::FeedNormalizer.parse open(url)
+        feed = Timeout::timeout(10) { FeedNormalizer::FeedNormalizer.parse open(url) }
         feed.entries.each { |e| e.source = feed.title }
         stories.push(*feed.entries)
+      rescue Timeout::Error
+        puts "Timed out accessing #{url}"
       rescue SocketError => e
         puts "Server not found: #{url}"
       rescue OpenURI::HTTPError => e
@@ -67,12 +70,16 @@ module FeedFinder
   end
   
   def tidy_link(site, link)
+    p [site, link]
+    link = $1 if link =~ %r{^\[(.*)\]$}
     if (link =~ %r{^http://} )
       link
     else
       base = URI.parse(site)
       link_path, link_query = link.split('?')
-      new_path = "#{File.dirname(base.path)}/#{link_path}"
+      base_path = File.dirname(base.path)
+      new_path = (base_path == '.') ? link_path : "#{base_path}/#{link_path}"
+      new_path = '/' + new_path unless new_path =~ %r{^/}
       base.path, base.query = new_path, link_query
       base.to_s
     end
@@ -81,9 +88,11 @@ module FeedFinder
   def locate_links(url)
     links = []
     begin
-      doc = Hpricot(open(url))
+      doc = Timeout::timeout(10) { Hpricot(open(url)) }
       links << (doc/"//link[@rel='alternate']")
       links << (doc/"//a").find_all { |a| a.inner_html.downcase == 'rss' }
+    rescue Timeout::Error
+      puts "Timed out accessing: #{url}"
     rescue SocketError => e
       puts "Server not found: #{url}"
     rescue OpenURI::HTTPError => e
@@ -94,7 +103,8 @@ module FeedFinder
 
   def locate_feeds_on_page(site)
     doc = Hpricot(open(site.target))
-  end        
+  end
+           
 end
 
 if __FILE__==$0

@@ -55,17 +55,27 @@ module MusicNews::Views
     p do      
       a musicbrainz_link(@artist), :href => musicbrainz_link(@artist), :target => 'new'
     end
-    table do
-      tr do
-        th { 'Date' }
-        th { 'Source' }
-        th { 'Post' }
+    if @stories.empty?
+      p { strong 'No feeds found!' }
+      p do 
+        text 'Search for blogs and feeds about '
+        a @artist.name, :href => "http://www.google.com/search?q=#{@artist.name}";
+        text ' and add them to '
+        a 'MusicBrainz', :href => musicbrainz_link(@artist)
       end
-      @stories.each do |story|
+    else
+      table do
         tr do
-          td { story.last_updated }
-          td { story.source }
-          td { a story.title, :href => story.urls.first }
+          th { 'Date' }
+          th { 'Source' }
+          th { 'Post' }
+        end
+        @stories.each do |story|
+          tr do
+            td { story.last_updated }
+            td { story.source }
+            td { a story.title, :href => story.urls.first }
+          end
         end
       end
     end
