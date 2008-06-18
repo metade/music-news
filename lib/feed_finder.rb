@@ -70,7 +70,6 @@ module FeedFinder
   end
   
   def tidy_link(site, link)
-    p [site, link]
     link = $1 if link =~ %r{^\[(.*)\]$}
     if (link =~ %r{^http://} )
       link

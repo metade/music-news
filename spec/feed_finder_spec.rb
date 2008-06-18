@@ -31,51 +31,51 @@ describe FeedFinder do
     end
   end
   
-  # describe "finding links" do
-  #    it "should work out a relative link" do
-  #      feeds = locate_links('http://www.pleasureunit.com/coldplay/index.php')
-  #      feeds.should == ['http://www.pleasureunit.com/coldplay/news.xml']
-  #    end
-  # 
-  #    it "should find a myspace blog link" do
-  #      feeds = locate_links('http://blog.myspace.com/coldplay')
-  #      feeds.should == ['http://blog.myspace.com/blog/rss.cfm?friendID=2951183']
-  #    end  
-  #  end
-  #  
-  # describe "for Coldplay" do
-  #   before :all do
-  #     @artist = rbrainz_artist('cc197bad-dc9c-440d-a5b5-d52ba2e14234')
-  #     @feeds = get_feeds(@artist)
-  #   end
-  #  
-  #   it "should get some feeds" do
-  #     @feeds.should_not be_empty
-  #   end
-  # 
-  #   it "should include the myspace feed" do
-  #     @feeds.should be_include('http://blog.myspace.com/blog/rss.cfm?friendID=2951183')
-  #   end
-  # 
-  #   it "should include the coldplay fanpage feed" do
-  #     @feeds.should be_include('http://www.pleasureunit.com/coldplay/news.xml')
-  #   end
-  # end
-  # 
-  # describe "for The Zutons" do
-  #   before :all do
-  #     @artist = rbrainz_artist('6290b769-173d-49d1-990e-660a4e333877')
-  #     @feeds = get_feeds(@artist)
-  #     @stories = get_stories(@feeds)
-  #   end
-  #   
-  #   it "should get some feeds" do
-  #     @feeds.should_not be_empty
-  #   end
-  #   
-  #   it "should get some stories" do
-  #     @stories.should_not be_empty
-  #   end
-  # end
+  describe "finding links" do
+     it "should work out a relative link" do
+       feeds = locate_links('http://www.pleasureunit.com/coldplay/index.php')
+       feeds.should == ['http://www.pleasureunit.com/coldplay/news.xml']
+     end
+  
+     it "should find a myspace blog link" do
+       feeds = locate_links('http://blog.myspace.com/coldplay')
+       feeds.should == ['http://blog.myspace.com/blog/rss.cfm?friendID=2951183']
+     end  
+   end
+   
+  describe "for Coldplay" do
+    before :all do
+      @artist = rbrainz_artist('cc197bad-dc9c-440d-a5b5-d52ba2e14234')
+      @feeds = get_feeds(@artist)
+    end
+   
+    it "should get some feeds" do
+      @feeds.should_not be_empty
+    end
+  
+    it "should include the myspace feed" do
+      @feeds.should be_include('http://blog.myspace.com/blog/rss.cfm?friendID=2951183')
+    end
+  
+    it "should include the coldplay fanpage feed" do
+      @feeds.should be_include('http://www.pleasureunit.com/coldplay/news.xml')
+    end
+  end
+  
+  describe "for The Zutons" do
+    before :all do
+      @artist = rbrainz_artist('6290b769-173d-49d1-990e-660a4e333877')
+      @feeds = get_feeds(@artist)
+      @stories = get_stories(@feeds)
+    end
+    
+    it "should get some feeds" do
+      @feeds.should_not be_empty
+    end
+    
+    it "should get some stories" do
+      @stories.should_not be_empty
+    end
+  end
     
 end
