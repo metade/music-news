@@ -28,6 +28,7 @@ module FeedFinder
       end
       locate_links(url.target)
     end
+    feeds << "http://feeds.delicious.com/rss/tag/musicbrainz%2Fartist%2F#{mb_object.id.uuid}"
     feeds.flatten.uniq
   end
 
@@ -36,7 +37,7 @@ module FeedFinder
     feeds.each do |url|
       begin
         feed = Timeout::timeout(10) { FeedNormalizer::FeedNormalizer.parse open(url) }
-        feed.entries.each { |e| e.source = feed.title }
+        feed.entries.each { |e| e.source = (feed.title =~ /^Delicious/) ? 'Delicious' : feed.title }
         stories.push(*feed.entries)
       rescue Timeout::Error
         puts "Timed out accessing #{url}"
@@ -49,7 +50,7 @@ module FeedFinder
         
     coder = HTMLEntities.new
     stories.each do |story|
-      story.title = coder.decode(story.title)      
+      story.title = coder.decode(story.title)
     end
 
     stories.sort do |a,b| 
